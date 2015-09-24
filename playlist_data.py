@@ -93,7 +93,8 @@ def get_en_artist_data(artist_uri):
         'bucket=biographies'+'&'+\
         'bucket=discovery'+'&'+\
         'bucket=familiarity'+'&'+\
-        'bucket=hotttnesss'
+        'bucket=hotttnesss'+'&'+\
+        'bucket=reviews'
 	r = requests.get(base_url+suffix)
 	return json.loads(r.content)['response']
 
@@ -108,7 +109,8 @@ def get_data_from_artist_uri(artist_uri):
       artist['familiarity'],
       artist['hotttnesss'],
       artist['discovery'],
-      [bio['text'] for bio in artist['biographies']]
+      [bio['text'] for bio in artist['biographies']],
+      [review['summary'] for review in artist['reviews']]
     )
 	return artist_data
 

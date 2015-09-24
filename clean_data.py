@@ -23,17 +23,17 @@ def main(username='dbgoldberg01', favorites_name='science', justlike_name='justl
 	df_all = favorites.append(justlike, ignore_index=True)
 	df_all = df_all.reindex(np.random.permutation(df_all.index))
 
-	relavent_columns = ['track_popularity','discovery','familiarity',
-                    'hotttnesss','acousticness','danceability','duration',
-                    'energy','instrumentalness','liveness',
-                    'loudness', 'speechiness','tempo', 'valence']
-	df_all = df_all[relavent_columns]
+	df_all.dropna(inplace=True)
+	data.reset_index(drop=True, inplace=True)
 
-	to_normalize = ['duration','tempo','track_popularity','loudness']
+	to_normalize = ['duration','tempo']
 	df_all[to_normalize] = df_all[to_normalize] \
             .apply(lambda x: x/x.max())	
+	df_all['track_popularity'] /= 100
+	df_all['loudness'] = df_all['loudness'] - df_all['loudness'].min()
+	df_all['loudness'] = df_all['loudness'] / df_all['loudness'].max()
 	return df_all
 
 if '__main__' in __name__:
 	res = main(sys.argv[1], sys.argv[2], sys.argv[3])
-	sys.stdout(res)
+	res.to_csv('playlist.csv', encoding='utf-8')
