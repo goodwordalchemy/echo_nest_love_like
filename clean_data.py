@@ -24,7 +24,7 @@ def main(username='dbgoldberg01', favorites_name='science', justlike_name='justl
 	df_all = df_all.reindex(np.random.permutation(df_all.index))
 
 	df_all.dropna(inplace=True)
-	data.reset_index(drop=True, inplace=True)
+	df_all.reset_index(drop=True, inplace=True)
 
 	to_normalize = ['duration','tempo']
 	df_all[to_normalize] = df_all[to_normalize] \
@@ -36,4 +36,4 @@ def main(username='dbgoldberg01', favorites_name='science', justlike_name='justl
 
 if '__main__' in __name__:
 	res = main(sys.argv[1], sys.argv[2], sys.argv[3])
-	res.to_csv('playlist.csv', encoding='utf-8')
+	res.to_csv('playlist_with_reviews.csv', encoding='utf-8')

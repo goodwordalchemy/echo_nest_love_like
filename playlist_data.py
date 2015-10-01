@@ -20,6 +20,8 @@ def read_keys():
 	    keys_file.close()
 	    return keys
 
+keys = read_keys()
+
 class SpotifyAPIException(Exception):
 	pass
 
@@ -118,7 +120,7 @@ def get_track_artist_data(ps_df, debug=True):
 	"""ps_df is a dataframe with a bunch of tracks"""
 	artist_uris = ps_df['artist_uri']
 	artist_series_columns = ['genres','familiarity','hotttnesss',
-	        'discovery','biographies']
+	        'discovery','biographies', 'reviews']
 	artist_data = []
 
 	for i, uri in enumerate(artist_uris):
@@ -132,12 +134,13 @@ def get_track_artist_data(ps_df, debug=True):
 			if i%10==0:print i
 
 	uris, data = zip(*artist_data)
-	a, b, c, d, e = zip(*data)
+	a, b, c, d, e, f = zip(*data)
 	tmp = pd.DataFrame({artist_series_columns[0]:a,
 	                    artist_series_columns[1]:b,
 	                    artist_series_columns[2]:c,
 	                    artist_series_columns[3]:d,
-	                    artist_series_columns[4]:e})
+	                    artist_series_columns[4]:e,
+	                    artist_series_columns[5]:f})
 	tmp['artist_uri'] = uris
 	ps_df2 = ps_df.copy()
 	ps_df2 = pd.merge(ps_df2, tmp, on='artist_uri')
